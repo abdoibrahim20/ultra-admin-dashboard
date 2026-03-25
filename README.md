@@ -26,8 +26,8 @@ A modern, responsive, and interactive admin dashboard for managing sales, orders
 
 ## 📸 Preview
 
-![Dashboard Preview](![ultra-admin-dashboard](https://github.com/user-attachments/assets/c56d8372-e9ee-4fc9-b5f6-1166b0e003ca)
-)  
+![ultra-admin-dashboard](https://github.com/user-attachments/assets/03c2dd73-3c27-481c-8bda-8a21e5d06eee)
+
 
 
 ---
