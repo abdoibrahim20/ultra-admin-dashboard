@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ultra Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+:root{
+  --bg:#0f172a;
+  --card:#1e293b;
+  --text:#e2e8f0;
+  --primary:#6366f1;
+}
+
+.light{
+  --bg:#f5f7fb;
+  --card:#fff;
+  --text:#111;
+}
+
+body{
+  margin:0;
+  font-family:Arial;
+  background:var(--bg);
+  color:var(--text);
+}
+
+.container{padding:20px}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+}
+
+input,select{
+  padding:8px;
+  border-radius:6px;
+}
+
+button{
+  padding:8px 12px;
+  cursor:pointer;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+  margin-top:20px;
+}
+
+.card{
+  background:var(--card);
+  padding:20px;
+  border-radius:10px;
+}
+
+table{
+  width:100%;
+  margin-top:20px;
+  border-collapse:collapse;
+}
+
+td,th{padding:10px}
+
+tr{border-bottom:1px solid #444}
+
+.badge{
+  padding:4px 8px;
+  border-radius:20px;
+}
+
+.success{background:green}
+.pending{background:orange}
+.cancel{background:red}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="top">
+  <h2>Dashboard</h2>
+  <button onclick="toggleMode()">🌙 Mode</button>
+</div>
+
+<!-- Stats -->
+<div class="cards">
+  <div class="card">Sales: $12K</div>
+  <div class="card">Orders: 320</div>
+  <div class="card">Users: 1.2K</div>
+  <div class="card">Revenue: $8K</div>
+</div>
+
+<!-- Chart -->
+<canvas id="chart" height="100"></canvas>
+
+<!-- Controls -->
+<div style="margin-top:20px">
+  <input id="search" placeholder="Search...">
+  <select id="filter">
+    <option value="all">All</option>
+    <option value="success">Done</option>
+    <option value="pending">Pending</option>
+    <option value="cancel">Cancel</option>
+  </select>
+</div>
+
+<!-- Table -->
+<table id="table"></table>
+
+<!-- Pagination -->
+<div id="pages"></div>
+
+</div>
+
+<script>
+
+let data=[
+{id:1,name:"Ahmed",status:"success",price:120},
+{id:2,name:"Sara",status:"pending",price:80},
+{id:3,name:"Ali",status:"cancel",price:50},
+{id:4,name:"Omar",status:"success",price:200},
+{id:5,name:"Lina",status:"pending",price:60}
+];
+
+let page=1;
+
+function render(){
+  let search=document.getElementById("search").value.toLowerCase();
+  let filter=document.getElementById("filter").value;
+
+  let filtered=data.filter(d=>{
+    return (filter==="all"||d.status===filter)
+    && d.name.toLowerCase().includes(search);
+  });
+
+  let start=(page-1)*3;
+  let items=filtered.slice(start,start+3);
+
+  let html="<tr><th>ID</th><th>Name</th><th>Status</th><th>Price</th></tr>";
+
+  items.forEach(d=>{
+    html+=`
+    <tr>
+      <td>${d.id}</td>
+      <td>${d.name}</td>
+      <td><span class="badge ${d.status}">${d.status}</span></td>
+      <td>$${d.price}</td>
+    </tr>`;
+  });
+
+  document.getElementById("table").innerHTML=html;
+
+  // pages
+  let pages=Math.ceil(filtered.length/3);
+  let phtml="";
+  for(let i=1;i<=pages;i++){
+    phtml+=`<button onclick="page=${i};render()">${i}</button>`;
+  }
+  document.getElementById("pages").innerHTML=phtml;
+}
+
+document.getElementById("search").oninput=render;
+document.getElementById("filter").onchange=render;
+
+render();
+
+function toggleMode(){
+  document.body.classList.toggle("light");
+}
+
+// Chart
+new Chart(document.getElementById("chart"),{
+  type:"line",
+  data:{
+    labels:["Jan","Feb","Mar","Apr"],
+    datasets:[{
+      label:"Sales",
+      data:[10,20,15,30]
+    }]
+  }
+});
+
+</script>
+
+</body>
+</html>
