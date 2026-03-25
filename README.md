@@ -34,8 +34,7 @@ A modern, responsive, and interactive admin dashboard for managing sales, orders
 
 ## 🚀 Live Demo
 
-[Add your GitHub Pages link here]  
-*(Example: https://yourusername.github.io/ultra-admin-dashboard/)*
+[https://abdoibrahim20.github.io/ultra-admin-dashboard/]
 
 ---
 
